@@ -15,21 +15,22 @@ find_package(Boost REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(FFTW REQUIRED IMPORTED_TARGET fftw3)
 
-add_executable(laser_modulation main.cpp
-        EvanescentField.cpp
-        EvanescentField.h
-        HelperFunctions.cpp
-        HelperFunctions.h
-        WavePacket.cpp
-        WavePacket.h
-        FourierTransformation.cpp
-        FourierTransformation.h
-        Grid2D.h
-        Spline2D.h
-        WavePacketModulation.cpp
-        WavePacketModulation.h
-        BilinearInterpolatorRegular.h
-        BicubicInterpolator.h
+add_executable(laser_modulation 
+        src/main.cpp
+        src/EvanescentField.cpp
+        src/EvanescentField.h
+        src/HelperFunctions.cpp
+        src/HelperFunctions.h
+        src/WavePacket.cpp
+        src/WavePacket.h
+        src/FourierTransformation.cpp
+        src/FourierTransformation.h
+        src/Grid2D.h
+        src/Spline2D.h
+        src/WavePacketModulation.cpp
+        src/WavePacketModulation.h
+        src/BilinearInterpolatorRegular.h
+        src/BicubicInterpolator.h
 )
 
 message(STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
