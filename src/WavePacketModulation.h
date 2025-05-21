@@ -37,14 +37,16 @@ class WavePacketModulation {
     cPair evalAMatElem(double k1, double k2, double theta1, double theta2, const Spline2Dcomplex& Akz, const Spline2Dcomplex& Aky) const;
     Cdouble kIntPV(const cdVec& gList, dVec& kList, double kPole) const;
     std::vector<Grid2D<Cdouble>> evalWPmodCentral(WavePacket psi0, dVec kInitialVec, double kiCentral, dVec theta_i_vec, dVec thetaFinal, int NThetaEval);  // Modulation only calculated for central k, still integrate WP over all ki
+
+    // TODO: Make theta_eval const&?
     void calPhotonAmps(double ki, double theta_i, dVec theta_eval, std::vector<Grid2D<Cdouble>>& alphaGrids, std::vector<Grid2D<Cdouble>>& betaGrids);  // Function for calculating the 'tree' of born amplitudes for given ki, theta_i
 
     // Calculates the next alpha/beta 'amplitude' functions, assuming that both absorption and emission contributes
     void calNextAlphaBeta(double ki, dVec k_res_vec, dVec theta_eval, Grid2D<Cdouble>& newAlpha, Grid2D<Cdouble>& newBeta,
         const Grid2D<Cdouble>& oldAlpha, const Grid2D<Cdouble>& oldBeta, int li);
-    void calFinalAlpha(double ki, double kFinal, dVec theta_eval, Grid2D<Cdouble>& newAlpha,
+    void calFinalAlpha(double ki, double kFinal, const dVec& theta_eval, Grid2D<Cdouble>& newAlpha,
         const Grid2D<Cdouble>& oldAlpha, const Grid2D<Cdouble>& oldBeta, int li);
-    void calFinalBeta(double ki, double kFinal, dVec theta_eval, Grid2D<Cdouble>& newBeta,
+    void calFinalBeta(double ki, double kFinal, const dVec& theta_eval, Grid2D<Cdouble>& newBeta,
         const Grid2D<Cdouble>& oldAlpha, const Grid2D<Cdouble>& oldBeta, int li);
 
     // Hacky Bicubic interpolator

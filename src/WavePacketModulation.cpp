@@ -12,7 +12,6 @@
 #include <cstdlib>
 #include <cmath>
 
-
 ComplexCubicBSpline::ComplexCubicBSpline(const dVec& xList, const cdVec& funcVals) {
     xLeft = xList[0];
     xRight = xList.back();
@@ -593,7 +592,7 @@ void WavePacketModulation::calNextAlphaBeta(double ki, dVec k_res_vec, dVec thet
 }
 
 // Builds the final alpha function 
-void WavePacketModulation::calFinalAlpha(double ki, double kFinal, dVec theta_eval, Grid2D<Cdouble>& newAlpha, const Grid2D<Cdouble> &oldAlpha, const Grid2D<Cdouble> &oldBeta, int li) {
+void WavePacketModulation::calFinalAlpha(double ki, double kFinal, const dVec& theta_eval, Grid2D<Cdouble>& newAlpha, const Grid2D<Cdouble> &oldAlpha, const Grid2D<Cdouble> &oldBeta, int li) {
     // li is the photon exchange channel where the old alpha/beta COMES from. New l's are taken care of in the G!
     double dTheta = theta_eval[1] - theta_eval[0];
     size_t NThetaEval = theta_eval.size();
@@ -632,6 +631,12 @@ void WavePacketModulation::calFinalAlpha(double ki, double kFinal, dVec theta_ev
         sinThetaEval[i] = std::sin(theta_eval[i]);
         cosThetaEval[i] = std::cos(theta_eval[i]);
     }
+   
+    // Pre-allocate memory
+    std::vector<int> ixVec(NThetaEval);
+    std::vector<int> iyVec(NThetaEval);
+    dVec tVec(NThetaEval);
+    dVec uVec(NThetaEval);
 
     // Loop over k and theta for which we want to evaluate the new alpha/beta
     for (int jEval=0; jEval<theta_eval.size(); jEval++) {
@@ -641,12 +646,7 @@ void WavePacketModulation::calFinalAlpha(double ki, double kFinal, dVec theta_ev
             // Outer loop we perform PV integrals over k
             double kp = k_eval[ip];
 
-
             // Try to get stuff vectorized
-            std::vector<int> ixVec(NThetaEval);
-            std::vector<int> iyVec(NThetaEval);
-            dVec tVec(NThetaEval);
-            dVec uVec(NThetaEval);
             for (int jp=0; jp<NThetaEval; jp++) {
                 double delta_kx = kFinal * cosThetaEval[jEval] - kp * cosThetaEval[jp];
                 double delta_ky = kFinal * sinThetaEval[jEval] - kp * sinThetaEval[jp];
@@ -699,7 +699,7 @@ void WavePacketModulation::calFinalAlpha(double ki, double kFinal, dVec theta_ev
 }
 
 // Builds the final beta function 
-void WavePacketModulation::calFinalBeta(double ki, double kFinal, dVec theta_eval, Grid2D<Cdouble>& newBeta, const Grid2D<Cdouble> &oldAlpha, const Grid2D<Cdouble> &oldBeta, int li) {
+void WavePacketModulation::calFinalBeta(double ki, double kFinal, const dVec& theta_eval, Grid2D<Cdouble>& newBeta, const Grid2D<Cdouble> &oldAlpha, const Grid2D<Cdouble> &oldBeta, int li) {
     // li is the photon exchange channel where the old alpha/beta COMES from. New l's are taken care of in the G!
     double dTheta = theta_eval[1] - theta_eval[0];
 
@@ -740,21 +740,21 @@ void WavePacketModulation::calFinalBeta(double ki, double kFinal, dVec theta_eva
         cosThetaEval[i] = std::cos(theta_eval[i]);
     }
 
+    // Pre-allocate memory
+    std::vector<int> ixVec(NThetaEval);
+    std::vector<int> iyVec(NThetaEval);
+    dVec tVec(NThetaEval);
+    dVec uVec(NThetaEval);
+
     // Loop over k and theta for which we want to evaluate the new alpha/beta
     for (int jEval=0; jEval<theta_eval.size(); jEval++) {
-        //double theta_e = theta_eval[jEval];
 
         // Loops to perform integrals
         for (int ip=0; ip<k_eval.size(); ip++) {
             // Outer loop we perform PV integrals over k
             double kp = k_eval[ip];
 
-
             // Try to get stuff vectorized
-            std::vector<int> ixVec(NThetaEval);
-            std::vector<int> iyVec(NThetaEval);
-            dVec tVec(NThetaEval);
-            dVec uVec(NThetaEval);
             for (int jp=0; jp<NThetaEval; jp++) {
                 double delta_kx = -kFinal * cosThetaEval[jEval] + kp * cosThetaEval[jp];
                 double delta_ky = -kFinal * sinThetaEval[jEval] + kp * sinThetaEval[jp];

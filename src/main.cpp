@@ -53,8 +53,10 @@ int main() {
     */ 
 
     // Setup for the Fourier transform
-    int Nz = 2000;
-    int Ny = 2000;
+    //int Nz = 2000;
+    //int Ny = 2000;
+    int Nz = 200;
+    int Ny = 200;
     double kxMax = 0.08;
     double kyMax = 0.08;
 

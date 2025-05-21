@@ -3,7 +3,7 @@ project(laser_modulation)
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -ffast-math -march=native")  # -fopt-info-vec-optimized -fopt-info-vec-missed 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -ffast-math -mavx2 -g")  # -fopt-info-vec-optimized -fopt-info-vec-missed 
 
 # Find OpenMP
 find_package(OpenMP REQUIRED)
@@ -31,6 +31,8 @@ add_executable(laser_modulation
         src/WavePacketModulation.h
         src/BilinearInterpolatorRegular.h
         src/BicubicInterpolator.h
+        src/Timer.h
+        src/Timer.cpp
 )
 
 message(STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}")
